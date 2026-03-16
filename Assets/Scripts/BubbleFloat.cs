@@ -16,16 +16,19 @@ public class BubbleFloat : MonoBehaviour
 
     private void Awake()
     {
-        // Lấy tham chiếu đến các component
-        MaterialFadeAlpha materialFadeAlpha = FindObjectOfType<MaterialFadeAlpha>();
-        VolumeBlender volumeBlender = FindObjectOfType<VolumeBlender>();
+        MaterialFadeAlpha materialFadeAlpha = FindAnyObjectByType<MaterialFadeAlpha>();
+        VolumeBlender volumeBlender = FindAnyObjectByType<VolumeBlender>();
 
-        // Gọi cả hai hiệu ứng
-        if (materialFadeAlpha != null)
-            materialFadeAlpha.AlphaTransitionEffect();
+        TriggerEffects(materialFadeAlpha, volumeBlender);
 
-        if (volumeBlender != null)
-            volumeBlender.TriggerWaterEffect();
+        static void TriggerEffects(MaterialFadeAlpha materialFadeAlpha, VolumeBlender volumeBlender)
+        {
+            if (materialFadeAlpha != null)
+                materialFadeAlpha.AlphaTransitionEffect();
+
+            if (volumeBlender != null)
+                volumeBlender.TriggerWaterEffect();
+        }
     }
 
     private void Start()
