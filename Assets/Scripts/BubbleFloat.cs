@@ -9,7 +9,24 @@ public class BubbleFloat : MonoBehaviour
     public float holdDuarationEffect = 2f; // Thời gian giữ hiệu ứng 
     public float fadeDurationEffect = 1f; // Thời gian fade in/out hiệu ứng
 
+    //public MaterialFadeAlpha materialFadeAlpha;
+    //public VolumeBlender volumeBlender;
+
     private Rigidbody rb;
+
+    private void Awake()
+    {
+        // Lấy tham chiếu đến các component
+        MaterialFadeAlpha materialFadeAlpha = FindObjectOfType<MaterialFadeAlpha>();
+        VolumeBlender volumeBlender = FindObjectOfType<VolumeBlender>();
+
+        // Gọi cả hai hiệu ứng
+        if (materialFadeAlpha != null)
+            materialFadeAlpha.AlphaTransitionEffect();
+
+        if (volumeBlender != null)
+            volumeBlender.TriggerWaterEffect();
+    }
 
     private void Start()
     {

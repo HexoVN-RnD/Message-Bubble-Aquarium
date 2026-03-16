@@ -5,8 +5,8 @@ using UnityEngine.Rendering;
 public class VolumeBlender : MonoBehaviour
 {
     public Volume volume2; // Volume hiệu ứng (đặt Priority cao hơn Volume 1)
-    private float fadeDuration; // Thời gian fade in/out
-    private float holdDuration; // Thời gian giữ
+    private float fadeDuration = 1; // Thời gian fade in/out
+    private float holdDuration = 2; // Thời gian giữ
 
     public void Start()
     {
