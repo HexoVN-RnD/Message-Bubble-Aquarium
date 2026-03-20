@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1541053681272406412
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5881528221008463572}
+  m_Layer: 0
+  m_Name: Bubble
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5881528221008463572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1541053681272406412}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.04651177, y: -0.10475677, z: 0.7825}
+  m_LocalScale: {x: 0.125, y: 0.125, z: 0.125}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8550624122999730302}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2794622555041750942
 GameObject:
   m_ObjectHideFlags: 0
@@ -37,6 +68,7 @@ Transform:
   m_Children:
   - {fileID: 3096631700118028078}
   - {fileID: 7426269536626427483}
+  - {fileID: 5881528221008463572}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6203412998897312818
@@ -167,8 +199,8 @@ MonoBehaviour:
   upwardSpeed: 1.5
   windStrength: 2
   noiseScale: 0.5
-  holdDuarationEffect: 2
-  fadeDurationEffect: 1
+  lifetimeBubble: 1.5
+  effect: {fileID: 0}
 --- !u!1 &3108531644710242833
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,7 +261,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
+  - {fileID: -7394986884354373288, guid: 54450f6f166c4624baaa8d6628a30e54, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -273,15 +305,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Sample text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
-  m_sharedMaterial: {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 54450f6f166c4624baaa8d6628a30e54, type: 2}
+  m_sharedMaterial: {fileID: -7394986884354373288, guid: 54450f6f166c4624baaa8d6628a30e54, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286545809
-  m_fontColor: {r: 0.5698112, g: 0.49777848, b: 0.49777848, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

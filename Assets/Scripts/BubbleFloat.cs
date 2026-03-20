@@ -5,31 +5,11 @@ public class BubbleFloat : MonoBehaviour
     [SerializeField] private float upwardSpeed = 1.5f; // Tốc độ bay lên cơ bản
     [SerializeField] private float windStrength = 2.0f; // Độ mạnh của gió
     [SerializeField] private float noiseScale = 0.5f;   // Độ mượt của sự thay đổi hướng gió
+    [SerializeField] private float lifetimeBubble = 1.5f;
+    [SerializeField] private GameObject effect;
 
-    public float holdDuarationEffect = 2f; // Thời gian giữ hiệu ứng 
-    public float fadeDurationEffect = 1f; // Thời gian fade in/out hiệu ứng
-
-    //public MaterialFadeAlpha materialFadeAlpha;
-    //public VolumeBlender volumeBlender;
 
     private Rigidbody rb;
-
-    private void Awake()
-    {
-        MaterialFadeAlpha materialFadeAlpha = FindAnyObjectByType<MaterialFadeAlpha>();
-        VolumeBlender volumeBlender = FindAnyObjectByType<VolumeBlender>();
-
-        TriggerEffects(materialFadeAlpha, volumeBlender);
-
-        static void TriggerEffects(MaterialFadeAlpha materialFadeAlpha, VolumeBlender volumeBlender)
-        {
-            if (materialFadeAlpha != null)
-                materialFadeAlpha.AlphaTransitionEffect();
-
-            if (volumeBlender != null)
-                volumeBlender.TriggerWaterEffect();
-        }
-    }
 
     private void Start()
     {
@@ -50,4 +30,25 @@ public class BubbleFloat : MonoBehaviour
         // 3. Áp dụng lực vào Rigidbody
         rb.AddForce(lift + wind);
     }
+
+    //private IEnumerator DeactivateAndDestroy()
+    //{
+    //    yield return new WaitForSeconds(lifetimeBubble);
+
+    //    if (effect != null)
+    //    {
+    //        effect.SetActive(true);
+    //    }
+
+    //    Destroy(gameObject);
+    //}
+
+    //private void TriggerEffect(MaterialFadeAlpha m, VolumeBlender v)
+    //{
+    //    if (m != null)
+    //        m.AlphaTransitionEffect();
+
+    //    if (v != null)
+    //        v.TriggerWaterEffect();
+    //}
 }

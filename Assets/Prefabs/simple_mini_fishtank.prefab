@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: simple_mini_fishtank
       objectReference: {fileID: 0}
+    - target: {fileID: 1265121606572780842, guid: c2e28c7312fd26f4ead2d4f91f6b9e66, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3341782594480784251, guid: c2e28c7312fd26f4ead2d4f91f6b9e66, type: 3}
       propertyPath: m_Name
       value: soil
