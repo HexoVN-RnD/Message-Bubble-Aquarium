@@ -305,7 +305,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Sample text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 54450f6f166c4624baaa8d6628a30e54, type: 2}
+  m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: -7394986884354373288, guid: 54450f6f166c4624baaa8d6628a30e54, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -385,6 +385,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8550624122999730302}
     m_Modifications:
+    - target: {fileID: 455082483076961878, guid: 6ed54f9be312e2346b31d050217b16b2, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e823cd5b5d27c0f4b8256e7c12ee3e6d, type: 2}
     - target: {fileID: 5215690691432002233, guid: 6ed54f9be312e2346b31d050217b16b2, type: 3}
       propertyPath: m_Name
       value: PopEffect

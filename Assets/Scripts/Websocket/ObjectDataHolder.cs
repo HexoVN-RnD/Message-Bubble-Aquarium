@@ -1,7 +1,7 @@
 using System.Collections;
+using TMPro; // Nếu dùng TextMeshPro; đổi thành UnityEngine.UI.Text nếu dùng Legacy Text
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // Nếu dùng TextMeshPro; đổi thành UnityEngine.UI.Text nếu dùng Legacy Text
 
 /// <summary>
 /// Gắn script này vào GameObject Prefab.
@@ -16,9 +16,12 @@ public class ObjectDataHolder : MonoBehaviour
     [Tooltip("Tự động ẩn UI sau bao nhiêu giây (0 = không tự ẩn)")]
     public float autoDismissDelay = 5f;
 
+    [SerializeField] private MeshRenderer renderer;
+
     [Header("Prefab Settings")]
     [Tooltip("Prefab chứa Panel, Image, và TextMeshPro")]
     public GameObject dataPanelPrefab;
+    public GameObject effectPrefab;
 
     // ─── Dữ liệu nhận từ WebSocket ───
     private string _text;
@@ -47,7 +50,7 @@ public class ObjectDataHolder : MonoBehaviour
     //  LOAD TEXTURE TỪ BYTES
     // ─────────────────────────────────────────────
 
-    IEnumerator LoadImageFromBytes(byte[] bytes)
+    private IEnumerator LoadImageFromBytes(byte[] bytes)
     {
         Texture2D tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
         bool loaded = tex.LoadImage(bytes); // Hỗ trợ PNG/JPG
@@ -71,79 +74,52 @@ public class ObjectDataHolder : MonoBehaviour
     //  VA CHẠM 3D
     // ─────────────────────────────────────────────
 
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
         if (!_uiShown && (string.IsNullOrEmpty(collisionTag) || collision.gameObject.CompareTag(collisionTag)))
         {
             _collidingObject = collision.collider;
+            InstantiateEffect();
+            TriggerWaterEffect();
+            renderer.enabled = false;
             ShowUI();
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (!_uiShown && (string.IsNullOrEmpty(collisionTag) || other.CompareTag(collisionTag)))
+    //    {
+    //        _collidingObject = other;
+    //        TriggerWaterEffect();
+    //        ShowUI();
+    //    }
+    //}
+
+    private void TriggerWaterEffect()
     {
-        if (!_uiShown && (string.IsNullOrEmpty(collisionTag) || other.CompareTag(collisionTag)))
+        VolumeBlender blender = FindAnyObjectByType<VolumeBlender>();
+        if (blender != null)
         {
-            _collidingObject = other;
-            ShowUI();
+            blender.TriggerWaterEffect();
+        }
+        else
+        {
+            Debug.LogWarning("[ObjectDataHolder] VolumeBlender not found in scene!");
+        }
+    }
+
+    private void InstantiateEffect()
+    {
+        if (effectPrefab != null)
+        {
+            Vector3 effectPosition = transform.position; // Hoặc có thể là vị trí va chạm nếu cần
+            GameObject effectInstance = Instantiate(effectPrefab, effectPosition, Quaternion.identity);
         }
     }
 
 
-    /// <summary>
-    /// Convert vị trí World thành vị trí trên Canvas sử dụng Raycast
-    /// Tối ưu cho Orthographic camera + Screen Space - Overlay
-    /// </summary>
-    Vector2 GetCanvasPosition(Vector3 worldPos)
-    {
-        if (_mainCamera == null)
-            _mainCamera = Camera.main;
-
-        if (_mainCamera == null)
-        {
-            Debug.LogWarning("[ObjectDataHolder] Không tìm thấy Main Camera!");
-            return Vector2.zero;
-        }
-
-        RectTransform canvasRect = _targetCanvas.GetComponent<RectTransform>();
-        if (canvasRect == null)
-        {
-            Debug.LogWarning("[ObjectDataHolder] Canvas không có RectTransform!");
-            return Vector2.zero;
-        }
-
-        // Tạo ray từ camera qua vị trí world position
-        Vector3 screenPos = _mainCamera.WorldToScreenPoint(worldPos);
-        Ray ray = _mainCamera.ScreenPointToRay(screenPos);
-
-        // Tạo plane vuông góc với camera, đi qua vị trí object
-        Plane canvasPlane = new Plane(-_mainCamera.transform.forward, worldPos);
-
-        // Raycast để tìm giao điểm chính xác
-        if (canvasPlane.Raycast(ray, out float enter))
-        {
-            Vector3 hitPoint = ray.origin + ray.direction * enter;
-
-            // Chuyển từ world position sang local position tương ứng canvas
-            Vector3 localPos = _mainCamera.transform.InverseTransformPoint(hitPoint);
-
-            // Với Orthographic, tính canvas position từ local position
-            float orthoHeight = _mainCamera.orthographicSize * 2f;
-            float orthoWidth = orthoHeight * _mainCamera.aspect;
-
-            Vector2 canvasPos = new Vector2(
-                (localPos.x / orthoWidth) * canvasRect.rect.width,
-                (localPos.y / orthoHeight) * canvasRect.rect.height
-            );
-
-            return canvasPos;
-        }
-
-        Debug.LogWarning("[ObjectDataHolder] Raycast không tìm thấy intersection!");
-        return Vector2.zero;
-    }
-
-    void ShowUI()
+    private void ShowUI()
     {
         if (_targetCanvas == null)
         {
@@ -158,45 +134,68 @@ public class ObjectDataHolder : MonoBehaviour
         }
 
         _uiShown = true;
-        _uiPanel = Instantiate(dataPanelPrefab, _targetCanvas.transform, false);
-
-        // Set vị trí panel tương ứng với vật thể va chạm
-        if (_collidingObject != null)
+        InstantiateWithObjectPosition();
+        void InstantiateWithObjectPosition()
         {
-            Vector2 canvasPos = GetCanvasPosition(_collidingObject.bounds.center);
-            RectTransform panelRect = _uiPanel.GetComponent<RectTransform>();
-            if (panelRect != null)
+            // 1. Tạo UI Prefab
+            _uiPanel = Instantiate(dataPanelPrefab);
+
+            // 2. Gán cha (Canvas). Dùng false để giữ nguyên thông số Local của Prefab
+            _uiPanel.transform.SetParent(_targetCanvas.transform, false);
+
+            // 3. Lấy vị trí của CHÍNH VẬT THỂ NÀY (World Space)
+            Vector3 worldPos = transform.position;
+
+            // 4. Chuyển sang tọa độ màn hình
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+
+            // KIỂM TRA: Nếu vật thể nằm sau lưng Camera (z < 0), ScreenPoint vẫn trả về giá trị
+            // nhưng thường sẽ bị đảo ngược hoặc sai lệch.
+            if (screenPos.z > 0)
             {
-                panelRect.anchoredPosition = canvasPos;
+                screenPos.z = 0; // Canvas Overlay không dùng trục Z
+                _uiPanel.transform.position = screenPos;
+                _uiPanel.SetActive(true);
+            }
+            else
+            {
+                // Nếu vật thể ở sau lưng camera, tạm ẩn UI đi
+                _uiPanel.SetActive(false);
             }
         }
 
-        // Tìm Image component và gán sprite
-        Image imageComponent = _uiPanel.GetComponentInChildren<Image>(true);
-        if (imageComponent != null && _sprite != null)
+        AssignComponent();
+        void AssignComponent()
         {
-            imageComponent.sprite = _sprite;
-            imageComponent.preserveAspect = true;
-        }
+            // Tìm Image component và gán sprite
+            Image imageComponent = _uiPanel.GetComponentInChildren<Image>(true);
+            if (imageComponent != null && _sprite != null)
+            {
+                imageComponent.sprite = _sprite;
+                imageComponent.preserveAspect = true;
+            }
 
-        // Tìm TextMeshProUGUI component và gán text
-        TMP_Text textComponent = _uiPanel.GetComponentInChildren<TMP_Text>(true);
-        if (textComponent != null && !string.IsNullOrEmpty(_text))
-        {
-            textComponent.text = _text;
-        }
+            // Tìm TextMeshProUGUI component và gán text
+            TMP_Text textComponent = _uiPanel.GetComponentInChildren<TMP_Text>(true);
+            if (textComponent != null && !string.IsNullOrEmpty(_text))
+            {
+                textComponent.text = _text;
+            }
 
-        // Tìm Button để xử lý sự kiện đóng
-        Button closeButton = _uiPanel.GetComponentInChildren<Button>(true);
-        if (closeButton != null)
-        {
-            closeButton.onClick.AddListener(HideUI);
+            // Tìm Button để xử lý sự kiện đóng
+            Button closeButton = _uiPanel.GetComponentInChildren<Button>(true);
+            if (closeButton != null)
+            {
+                closeButton.onClick.AddListener(HideUI);
+            }
         }
 
         if (autoDismissDelay > 0)
             StartCoroutine(AutoDismiss());
 
         Debug.Log($"[ObjectDataHolder] 🖼️ Hiển thị UI: '{_text}'");
+
+
     }
 
     public void HideUI()
@@ -209,13 +208,13 @@ public class ObjectDataHolder : MonoBehaviour
         }
     }
 
-    IEnumerator AutoDismiss()
+    private IEnumerator AutoDismiss()
     {
         yield return new WaitForSeconds(autoDismissDelay);
         HideUI();
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
         HideUI();
     }

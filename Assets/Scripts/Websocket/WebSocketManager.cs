@@ -255,7 +255,7 @@ public class WebSocketManager : MonoBehaviour
     {
         ReceivedData fakeData = new ReceivedData
         {
-            text = "Test spawn hoạt động! 🎉",
+            text = "Test spawn hoạt động!",
             imageBytes = null
         };
         SpawnObject(fakeData);

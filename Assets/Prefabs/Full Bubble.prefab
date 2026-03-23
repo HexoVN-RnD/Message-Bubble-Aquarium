@@ -473,6 +473,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 846091228823258732}
     m_Modifications:
+    - target: {fileID: 455082483076961878, guid: 6ed54f9be312e2346b31d050217b16b2, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e823cd5b5d27c0f4b8256e7c12ee3e6d, type: 2}
     - target: {fileID: 5215690691432002233, guid: 6ed54f9be312e2346b31d050217b16b2, type: 3}
       propertyPath: m_Name
       value: PopEffect

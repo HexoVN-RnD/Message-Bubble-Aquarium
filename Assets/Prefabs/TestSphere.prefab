@@ -126,7 +126,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionTag: TopWaterSurface
   autoDismissDelay: 5
+  renderer: {fileID: 5382768083884957556}
   dataPanelPrefab: {fileID: 8032938366475468581, guid: b5dd6b1c5c93d944b913229065dc0c42, type: 3}
+  effectPrefab: {fileID: 339158821923109191, guid: 60f952bf6805e98418d1f8099705f3fb, type: 3}
 --- !u!54 &4387986119067910814
 Rigidbody:
   m_ObjectHideFlags: 0
