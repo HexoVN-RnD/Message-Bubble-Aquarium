@@ -47,6 +47,12 @@ namespace FishAlive
         private bool _hardLimitsEnabled = false;
         private Vector3 _hardLimitsMax = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
         private Vector3 _hardLimitsMin = new Vector3(float.MinValue, float.MinValue, float.MinValue);
+        
+        // Scale factor for animations and physics
+        private float _scaleFactor = 1f;
+        
+        [SerializeField, Tooltip("Multiplier to adjust fish movement speed when scaled. Adjust this if the fish moves too fast or too slow after scaling.")]
+        private float _speedMultiplier = 1f;
 
         private const float VerticalPrecisionMul = 0.2f;
         private float _targetPingTimer = 0;
@@ -154,6 +160,8 @@ namespace FishAlive
             _startTime = Time.time;
             _turning = false;
             if (_autoMotion) PingTarget();
+            // Update scale factor
+            _scaleFactor = GetScaleFactor();
             _motionBendTracking.trackingLength = _bodyRadius;
             _avoidanceTimerInterval = FishConstant.AvoidanceTimerInterval + Random.value * 0.1f;
         }
@@ -161,6 +169,9 @@ namespace FishAlive
         // Update is called once per frame
         void Update()
         {
+            // Update scale factor every frame to handle runtime scale changes
+            _scaleFactor = GetScaleFactor();
+            
             Motion(Time.deltaTime);
             TimedCalls(Time.deltaTime);
 
@@ -236,6 +247,16 @@ namespace FishAlive
         {
             //SetAutoMotion(_autoMotion);
             //SetReachMode(_targetReachMode);
+        }
+
+        /// <summary>
+        /// Gets the average scale factor from transform.localScale to apply to physics and animation.
+        /// </summary>
+        private float GetScaleFactor()
+        {
+            if (_transform == null) return 1f;
+            var scale = _transform.localScale;
+            return (Mathf.Abs(scale.x) + Mathf.Abs(scale.y) + Mathf.Abs(scale.z)) / 3f;
         }
 
         /// <summary>
@@ -517,7 +538,8 @@ namespace FishAlive
                 _speed += acceleration * dt;
                 _speed -= Config.LiquidDrag * _speed * dt;
                 Vector3 dir = _transform.forward;
-                _transform.position += dt * _speed * dir;
+                // Scale position movement by scaleFactor and speedMultiplier
+                _transform.position += dt * _speed * dir * _scaleFactor * _speedMultiplier;
 
                 //turning towards target
                 if (_turning) MotionTurning(dt);
@@ -538,7 +560,8 @@ namespace FishAlive
                 var dir = _transform.forward;
 
                 (_speed, dir) = _reach.Update(_speed, dir, dt);
-                _transform.position += (dir * _speed) * dt;
+                // Scale position movement by scaleFactor and speedMultiplier
+                _transform.position += (dir * _speed) * dt * _scaleFactor * _speedMultiplier;
 
                 if (_reach.Complete)
                 {
@@ -713,8 +736,10 @@ namespace FishAlive
         public void EnableHardLimits(Vector3 limitsMin, Vector3 limitsMax)
         {
             _hardLimitsEnabled = true;
-            _hardLimitsMin = limitsMin + new Vector3(_bodyRadius, _bodyRadius, _bodyRadius);
-            _hardLimitsMax = limitsMax - new Vector3(_bodyRadius, _bodyRadius, _bodyRadius);
+            // Scale the body radius for limit calculations
+            float scaledBodyRadius = _bodyRadius * _scaleFactor;
+            _hardLimitsMin = limitsMin + new Vector3(scaledBodyRadius, scaledBodyRadius, scaledBodyRadius);
+            _hardLimitsMax = limitsMax - new Vector3(scaledBodyRadius, scaledBodyRadius, scaledBodyRadius);
         }
 
         /// <summary>
