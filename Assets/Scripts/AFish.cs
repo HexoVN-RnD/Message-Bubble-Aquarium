@@ -5,6 +5,7 @@ public class AFish : MonoBehaviour
 {
 
 	public float speed;
+	public float minDistance = 0.75f;
 	//public float turnSpeed = 4.0f;
 	Vector3 averageHeading;
 	Vector3 averagePosition;
@@ -42,7 +43,7 @@ public class AFish : MonoBehaviour
 
 	void ApplyTankBoundary()
 	{
-		if (Vector3.Distance(transform.position, Vector3.zero) >= GlobalFlock.tankSize)
+		if (Vector3.Distance(transform.position, Vector3.zero) >= GlobalFlock.instance.tankSize)
 		{
 			turning = true;
 		}
@@ -76,7 +77,7 @@ public class AFish : MonoBehaviour
 					vCenter += go.transform.position;
 					groupSize++;
 
-					if (dist < 0.75f)
+					if (dist < minDistance)
 					{
 						vAvoid = vAvoid + (this.transform.position - go.transform.position);
 					}
