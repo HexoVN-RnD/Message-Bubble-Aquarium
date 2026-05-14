@@ -518,8 +518,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 60.241013, y: 20.511663, z: 24.523476}
-  m_Center: {x: -1.6296921, y: 0.009012222, z: -9.260289}
+  m_Size: {x: 64.44088, y: 25.764744, z: 17.32247}
+  m_Center: {x: 0.47024155, y: -1.7806578, z: -15.640338}
 --- !u!1 &215788673
 GameObject:
   m_ObjectHideFlags: 0
@@ -2353,8 +2353,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Tr\u1EA1ng th\xE1i m\u1EA1ng"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
-  m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a2afbcbe70920574eb33fe95b5b54cc2, type: 2}
+  m_sharedMaterial: {fileID: 9062085916978356766, guid: a2afbcbe70920574eb33fe95b5b54cc2, type: 2}
   m_fontSharedMaterials:
   - {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
   m_fontMaterial: {fileID: 0}
@@ -2715,11 +2715,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9034177723036066038, guid: 26e4243d2c1f4f6428f4e00761b17fe8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -50.6
       objectReference: {fileID: 0}
     - target: {fileID: 9034177723036066038, guid: 26e4243d2c1f4f6428f4e00761b17fe8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -16.4
       objectReference: {fileID: 0}
     - target: {fileID: 9034177723036066038, guid: 26e4243d2c1f4f6428f4e00761b17fe8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9969,7 +9969,7 @@ MonoBehaviour:
   m_IsGlobal: 1
   priority: 0
   blendDistance: 1
-  weight: 1
+  weight: 0
   sharedProfile: {fileID: 11400000, guid: 5f879077e5887b641a1b11fb95200b1a, type: 2}
 --- !u!65 &1893457663
 BoxCollider:

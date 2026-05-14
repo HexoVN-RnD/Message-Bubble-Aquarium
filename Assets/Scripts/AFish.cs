@@ -27,7 +27,8 @@ public class AFish : MonoBehaviour
 
 		if (turning)
 		{
-			Vector3 direction = Vector3.zero - transform.position;
+			Bounds tankBounds = GlobalFlock.instance.GetTankBounds();
+			Vector3 direction = tankBounds.center - transform.position;
 			transform.rotation = Quaternion.Slerp(transform.rotation,
 				Quaternion.LookRotation(direction),
 				TurnSpeed() * Time.deltaTime);

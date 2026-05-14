@@ -36,12 +36,12 @@ public class ConnectionStatusUI : MonoBehaviour
 
     void HandleConnected()
     {
-        SetStatus("✓ Đã kết nối", connectedColor);
+        SetStatus(" Đã kết nối", connectedColor);
     }
 
     void HandleDisconnected()
     {
-        SetStatus("✗ Mất kết nối - Đang thử lại...", disconnectedColor);
+        SetStatus(" Mất kết nối - Đang thử lại...", disconnectedColor);
     }
 
     void SetStatus(string message, Color color)
