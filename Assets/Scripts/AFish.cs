@@ -3,9 +3,10 @@ using System.Collections;
 
 public class AFish : MonoBehaviour
 {
-
-	public float speed;
-	public float minDistance = 0.75f;
+	[SerializeField] private float minSpeed = 0.5f;
+	[SerializeField] private float maxSpeed = 2.0f;
+	private float speed;
+	[SerializeField] public float minDistance = 0.75f;
 	//public float turnSpeed = 4.0f;
 	Vector3 averageHeading;
 	Vector3 averagePosition;
@@ -16,7 +17,7 @@ public class AFish : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		speed = Random.Range(0.5f, 1.0f);
+		speed = Random.Range(minSpeed, maxSpeed);
 	}
 
 	// Update is called once per frame
@@ -30,7 +31,7 @@ public class AFish : MonoBehaviour
 			transform.rotation = Quaternion.Slerp(transform.rotation,
 				Quaternion.LookRotation(direction),
 				TurnSpeed() * Time.deltaTime);
-			speed = Random.Range(0.5f, 1);
+			speed = Random.Range(minSpeed, maxSpeed);
 		}
 		else
 		{
@@ -43,14 +44,8 @@ public class AFish : MonoBehaviour
 
 	void ApplyTankBoundary()
 	{
-		if (Vector3.Distance(transform.position, Vector3.zero) >= GlobalFlock.instance.tankSize)
-		{
-			turning = true;
-		}
-		else
-		{
-			turning = false;
-		}
+		Bounds tankBounds = GlobalFlock.instance.GetTankBounds();
+		turning = !tankBounds.Contains(transform.position);
 	}
 
 	void ApplyRules()

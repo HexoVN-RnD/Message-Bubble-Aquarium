@@ -476,6 +476,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 194133280}
+  - component: {fileID: 194133281}
   m_Layer: 0
   m_Name: FishSchool
   m_TagString: Untagged
@@ -492,12 +493,33 @@ Transform:
   m_GameObject: {fileID: 194133279}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -2.78, y: -42.3, z: -13.5}
+  m_LocalPosition: {x: 1.6, y: -61.5, z: -11.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &194133281
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194133279}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 60.241013, y: 20.511663, z: 24.523476}
+  m_Center: {x: -1.6296921, y: 0.009012222, z: -9.260289}
 --- !u!1 &215788673
 GameObject:
   m_ObjectHideFlags: 0
@@ -1724,7 +1746,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3793146743532390487, guid: 89c7d56787878bd45a97b081a69b5b43, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4604972887363670765, guid: 89c7d56787878bd45a97b081a69b5b43, type: 3}
       propertyPath: m_LocalScale.x
@@ -2685,7 +2707,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6377034126452488671, guid: 26e4243d2c1f4f6428f4e00761b17fe8, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9034177723036066038, guid: 26e4243d2c1f4f6428f4e00761b17fe8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4052,8 +4074,8 @@ MonoBehaviour:
   fishPrefabs:
   - {fileID: 6377034126452488671, guid: 26e4243d2c1f4f6428f4e00761b17fe8, type: 3}
   fishSchool: {fileID: 194133279}
-  tankSize: 20
-  numFish: 30
+  tankCollider: {fileID: 194133281}
+  numFish: 8
 --- !u!4 &1484102931
 Transform:
   m_ObjectHideFlags: 0
